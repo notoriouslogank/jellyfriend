@@ -65,5 +65,5 @@ def main():
         print("Something went awfully wrong...")
 
 
-check_env()
-# main()
+# check_env()
+main()
