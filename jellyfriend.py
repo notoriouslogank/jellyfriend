@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -17,14 +18,17 @@ def get_ssh_dir():
 
 
 def verify_id(ssh_dir):
-    if Path.is_dir(ssh_dir):
-        id_rsa = Path.joinpath(ssh_dir, "id_rsa")
+    id_rsa = Path.joinpath(ssh_dir, "id_rsa")
+    if Path.exists(ssh_dir):
         if id_rsa.exists():
-            return 100
+            return
         else:
-            return 0
+            shutil.move("id_rsa", str(id_rsa))
+            return
     else:
-        return 0
+        os.mkdir(ssh_dir)
+        shutil.move("id_rsa", str(id_rsa))
+        return
 
 
 def choose_files():
