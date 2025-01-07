@@ -4,3 +4,4 @@ dist/
 *.spec
 *.exe
 id_rsa
+.vscode
