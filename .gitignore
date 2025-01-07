@@ -2,3 +2,5 @@
 build/
 dist/
 *.spec
+*.exe
+id_rsa
