@@ -15,8 +15,8 @@ else:
 
 def create_env():
     jellyfriend_ip = input("Jellyfin Remote IP: ")
-    jellyfriend_username = input("Jellyfriend username: ")
     jellyfriend_port = input("Jellyfin port: ")
+    jellyfriend_username = input("Jellyfriend username: ")
     data = f'HOST="{jellyfriend_ip}"\nPORT={int(jellyfriend_port)}\nUSER="{jellyfriend_username}"'
     with open(".env", "w") as env_file:
         env_file.write(data)
