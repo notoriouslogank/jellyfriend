@@ -1,17 +1,23 @@
 import os
 import shutil
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
 from fabric import Connection
 from rich import print as print
 
+if getattr(sys, "frozen", False):
+    raw_id_rsa = os.path.join(sys._MEIPASS, "id_rsa")
+else:
+    raw_id_rsa = "id_rsa"
+
 
 def create_env():
     jellyfriend_ip = input("Jellyfin Remote IP: ")
     jellyfriend_username = input("Jellyfriend username: ")
     jellyfriend_port = input("Jellyfin port: ")
-    data = f'HOST="{jellyfriend_ip}"\nUSER="{jellyfriend_username}"\nPORT={int(jellyfriend_port)}'
+    data = f'HOST="{jellyfriend_ip}"\nPORT={int(jellyfriend_port)}\nUSER="{jellyfriend_username}"'
     with open(".env", "w") as env_file:
         env_file.write(data)
 
@@ -47,11 +53,11 @@ def verify_id(ssh_dir):
         if id_rsa.exists():
             return 100
         else:
-            shutil.move("id_rsa", str(id_rsa))
+            shutil.move(raw_id_rsa, str(id_rsa))
             return 100
     else:
         os.mkdir(ssh_dir)
-        shutil.move("id_rsa", str(id_rsa))
+        shutil.move(raw_id_rsa, str(id_rsa))
         return 0
 
 
