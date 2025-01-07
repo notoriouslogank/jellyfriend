@@ -4,19 +4,35 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from fabric import Connection
+from rich import print as print
 
-# load_dotenv(".env")
-# JELLYFRIEND_IP = os.getenv("HOST")
-# JELLYFRIEND_USERNAME = os.getenv("USER")
-# JELLYFRIEND_PORT = os.getenv("PORT")
+
+def create_env():
+    jellyfriend_ip = input("Jellyfin Remote IP: ")
+    jellyfriend_username = input("Jellyfriend username: ")
+    jellyfriend_port = input("Jellyfin port: ")
+    data = f'HOST="{jellyfriend_ip}"\nUSER="{jellyfriend_username}"\nPORT={int(jellyfriend_port)}'
+    with open(".env", "w") as env_file:
+        env_file.write(data)
 
 
 def check_env():
     env_path = Path(".env")
     if Path.exists(env_path):
-        return
+        return 100
     else:
-        raise Exception("Missing .env.  Please create .env file before using!")
+        print("Missing .env file!  Would you like to create one now? [Y/n]")
+        write_env = input("").lower()
+        if write_env == "":
+            return 50
+        elif write_env == "y":
+            return 50
+        elif write_env == "n":
+            print("no")
+            return 0
+        else:
+            print("Invalid response! Exiting without creating .env file!")
+            raise Exception("Invalid response.")
 
 
 def get_ssh_dir():
@@ -45,7 +61,16 @@ def choose_files():
 
 
 def main():
-    check_env()
+    env_exists = check_env()
+    print(env_exists)
+    if env_exists == 100:
+        pass
+    elif env_exists == 50:
+        create_env()
+    elif env_exists == 0:
+        raise Exception(
+            "Missing .env file.  Please create one before running application."
+        )
     load_dotenv()
     JELLYFRIEND_IP = os.getenv("HOST")
     JELLYFRIEND_USERNAME = os.getenv("USER")
@@ -65,5 +90,4 @@ def main():
         print("Something went awfully wrong...")
 
 
-# check_env()
 main()
