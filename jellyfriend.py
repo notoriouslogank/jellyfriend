@@ -5,10 +5,18 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fabric import Connection
 
-load_dotenv(".env")
-JELLYFRIEND_IP = os.getenv("HOST")
-JELLYFRIEND_USERNAME = os.getenv("USER")
-JELLYFRIEND_PORT = os.getenv("PORT")
+# load_dotenv(".env")
+# JELLYFRIEND_IP = os.getenv("HOST")
+# JELLYFRIEND_USERNAME = os.getenv("USER")
+# JELLYFRIEND_PORT = os.getenv("PORT")
+
+
+def check_env():
+    env_path = Path(".env")
+    if Path.exists(env_path):
+        return
+    else:
+        raise Exception("Missing .env.  Please create .env file before using!")
 
 
 def get_ssh_dir():
@@ -37,6 +45,11 @@ def choose_files():
 
 
 def main():
+    check_env()
+    load_dotenv()
+    JELLYFRIEND_IP = os.getenv("HOST")
+    JELLYFRIEND_USERNAME = os.getenv("USER")
+    JELLYFRIEND_PORT = os.getenv("PORT")
     c = Connection(
         host=JELLYFRIEND_IP, user=JELLYFRIEND_USERNAME, port=JELLYFRIEND_PORT
     )
@@ -52,4 +65,5 @@ def main():
         print("Something went awfully wrong...")
 
 
-main()
+check_env()
+# main()
