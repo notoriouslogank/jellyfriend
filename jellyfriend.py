@@ -29,14 +29,14 @@ def verify_id(ssh_dir):
     id_rsa = Path.joinpath(ssh_dir, "id_rsa")
     if Path.exists(ssh_dir):
         if id_rsa.exists():
-            return
+            return 100
         else:
             shutil.move("id_rsa", str(id_rsa))
-            return
+            return 100
     else:
         os.mkdir(ssh_dir)
         shutil.move("id_rsa", str(id_rsa))
-        return
+        return 0
 
 
 def choose_files():
