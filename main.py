@@ -33,17 +33,14 @@ def upload_files(files, hostname, port, username, keyfile):
     )
 
     sftp = ssh.open_sftp()
-    destination = str(input("Directory name: "))
+    destination = str(input("Directory name:\n"))
     sftp.chdir("uploads")
-    print(sftp.getcwd())
     print(sftp.mkdir(destination))
     sftp.chdir(destination)
-    print(sftp.getcwd())
     for file in files:
         file_path = Path.as_posix(file)
         file_name = os.path.basename(file_path)
         dest_file = f"/uploads/{destination}/{file_name}"
-        #        print(dest_file)
         sftp.put(str(file_path), str(dest_file))
         print(f"Uploaded {file_name}.")
     print("All files successfully uploaded!")
