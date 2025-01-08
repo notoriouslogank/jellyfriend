@@ -24,7 +24,7 @@ def write_env():
 
 
 def query_env():
-    print("No .env file found.  Would you like to create one now? [Y/n]")
+    print("\nNo .env file found.  Would you like to create one now? [Y/n] ")
     answer = input("").lower()
     if answer in ["", "y"]:
         return True
@@ -52,17 +52,17 @@ def setup():
     if not ssh_dir.exists():
         create_ssh_dir(ssh_dir)
         move_rsa_key(ssh_dir, rsa_key)
-        print(f"Created {ssh_dir}.\nMoved {rsa_key}.")
+        print(f"Created {ssh_dir}.\nMoved {rsa_key}.\n")
     elif not id_rsa.exists():
         move_rsa_key(ssh_dir, rsa_key)
-        print(f"Moved {rsa_key}")
+        print(f"Moved {rsa_key}\n")
 
     if not env.exists():
         if query_env() == True:
             write_env()
-            print("Wrote .env.")
+            print("Wrote .env.\n")
         else:
-            print("Not writing .env file. Program will now close.")
+            print("Not writing .env file. Program will now close.\n")
             raise FileNotFoundError()
 
 
