@@ -61,9 +61,20 @@ def verify_id(ssh_dir):
         return 0
 
 
-def choose_files():
+def get_upload_path():
     path_to_files = Path(input("File(s) to upload."))
-    return path_to_files
+    uploads = []
+    if Path.is_dir(path_to_files):
+        files = os.listdir(path_to_files)
+        for file in files:
+            filename = Path.joinpath(path_to_files, file)
+            uploads.append(filename)
+        return uploads
+    else:
+        return path_to_files
+
+
+# def iterate_through_dir(files):
 
 
 def main():
@@ -89,11 +100,14 @@ def main():
     if verified_id == 0:
         raise Exception("Missing id_rsa")
     elif verified_id == 100:
-        files = choose_files()
-        result = c.put(files, remote="/uploads")
-        print("Uploaded {0.local} to {0.remote}".format(result))
+        files = get_upload_path()
+        for file in files:
+            result = c.put(file, remote="/uploads")
+            # result = c.put(files, remote="/uploads")
+            print("Uploaded {0.local} to {0.remote}".format(result))
     else:
         print("Something went awfully wrong...")
 
 
+# get_upload_path()
 main()
