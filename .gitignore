@@ -5,3 +5,4 @@ dist/
 *.exe
 id_rsa
 .vscode
+/__pycache__/
